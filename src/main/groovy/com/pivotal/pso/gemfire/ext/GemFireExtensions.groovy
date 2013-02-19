@@ -3,9 +3,9 @@ package com.pivotal.pso.gemfire.ext
 import org.codehaus.groovy.runtime.m12n.SimpleExtensionModule
 
 
-class GemFireExtensionModules extends SimpleExtensionModule {
+class GemFireExtensions extends SimpleExtensionModule {
 
-    public GemFireExtensionModules() {
+    public GemFireExtensions() {
         super("gemfire-module", "1.0-SNAPSHOT")
     }
 

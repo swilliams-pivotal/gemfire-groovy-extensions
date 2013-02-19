@@ -5,7 +5,7 @@ apply from: 'gradle/infra.gradle'
 apply from: 'gradle/maven.gradle'
 
 repositories {
-  mavenRepo name: 'Gemstone', url: 'http://dist.gemstone.com/maven/release'
+  maven { url 'http://dist.gemstone.com/maven/release' }
   mavenCentral()
 }
 

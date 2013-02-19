@@ -1,6 +1,7 @@
 package com.pivotal.pso.gemfire.ext
 
 import groovy.transform.CompileStatic
+import groovy.transform.TypeChecked
 
 import com.gemstone.gemfire.cache.Cache
 import com.gemstone.gemfire.cache.CacheFactory
@@ -14,7 +15,7 @@ import com.pivotal.pso.gemfire.util.ClosureSerializer
 @CompileStatic
 class FunctionServiceStaticExtensions {
 
-    static FunctionService registerFunction(FunctionService selfType, String id, Closure closure) {
+    static void registerFunction(com.gemstone.gemfire.cache.execute.FunctionService selfType, java.lang.String id, groovy.lang.Closure closure) {
 
         String name = closure.class.name
 
@@ -29,9 +30,10 @@ class FunctionServiceStaticExtensions {
 
         FunctionAdapter adapter = new ClosureFunctionAdapter(id, true, true, false, closure)
         FunctionService.registerFunction(adapter)
+
     }
 
-    static FunctionService registerFunction(FunctionService selfType, String id, boolean ha, boolean result, boolean optimizeForWrite, Closure closure) {
+    static void registerFunction(FunctionService selfType, String id, boolean ha, boolean result, boolean optimizeForWrite, Closure closure) {
 
         String name = closure.class.name
 
@@ -46,6 +48,7 @@ class FunctionServiceStaticExtensions {
 
         FunctionAdapter adapter = new ClosureFunctionAdapter(id, ha, result, optimizeForWrite, closure)
         FunctionService.registerFunction(adapter)
+
     }
 
 }

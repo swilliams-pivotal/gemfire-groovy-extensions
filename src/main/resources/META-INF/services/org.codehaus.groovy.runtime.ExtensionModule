@@ -1,0 +1,4 @@
+moduleName=gemfire-module
+moduleVersion=1.0-SNAPSHOT
+extensionClasses=com.pivotal.pso.gemfire.ext.RegionExtensions
+staticExtensionClasses=com.pivotal.pso.gemfire.ext.FunctionServiceStaticExtensions

@@ -1,0 +1,23 @@
+// This is a single project
+
+apply plugin: 'groovy'
+apply from: 'gradle/infra.gradle'
+apply from: 'gradle/maven.gradle'
+
+repositories {
+  mavenRepo name: 'Gemstone', url: 'http://dist.gemstone.com/maven/release'
+  mavenCentral()
+}
+
+dependencies {
+  compile "org.codehaus.groovy:groovy-all:$groovyVersion"
+  compile "org.codehaus.gpars:gpars:$gparsVersion"
+  compile "com.gemstone.gemfire:gemfire:$gemfireVersion"
+  testCompile "junit:junit-dep:$junitVersion"
+}
+
+test {
+    testLogging.showStandardStreams = true
+}
+
+task cleanCheck(dependsOn: ['check','clean'])

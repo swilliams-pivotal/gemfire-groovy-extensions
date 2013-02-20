@@ -6,7 +6,7 @@ A Groovy DSL for GemFire
 Using Groovy extensions it's possible to write the following:
 
     def function1 = { fc->
-      println "called function! fc.getFunctionId()"
+      println "called function! ${fc.getFunctionId()}"
     }
 
     FunctionService.registerFunction('function1', function1)
@@ -14,7 +14,7 @@ Using Groovy extensions it's possible to write the following:
 Or alternatively and even more concisely:
 
     FunctionService.registerFunction('function1') { fc->
-      println "called function! fc.getFunctionId()"
+      println "called function! ${fc.getFunctionId()}"
     }
 
 The closure that is passed in as a parameter is wrapped in a FunctionAdapter that delegates to the closure, and modifies it's behaviour by adding additional utility methods.

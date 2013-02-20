@@ -28,7 +28,7 @@ class FunctionServiceStaticExtensions {
         byte[] data = new ClosureSerializer().serialize(closure)
         region.put(name, data)
 
-        FunctionAdapter adapter = new ClosureFunctionAdapter(id, true, true, false, closure)
+        FunctionAdapter adapter = new ClosureFunctionAdapter(id, true, true, false, closure.dehydrate())
         FunctionService.registerFunction(adapter)
 
     }

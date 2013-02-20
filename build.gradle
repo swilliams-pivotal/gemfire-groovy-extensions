@@ -9,6 +9,8 @@ repositories {
   mavenCentral()
 }
 
+defaultTasks = ['clean', 'check']
+
 dependencies {
   compile "org.codehaus.groovy:groovy-all:$groovyVersion"
   compile "org.codehaus.gpars:gpars:$gparsVersion"
@@ -16,7 +18,11 @@ dependencies {
   testCompile "junit:junit-dep:$junitVersion"
 }
 
+compileGroovy.groovyOptions.useAnt = true
+compileTestGroovy.groovyOptions.useAnt = true
+
 test {
+    testLogging { exceptionFormat "full" }
     testLogging.showStandardStreams = true
 }
 

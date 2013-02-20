@@ -1,10 +1,14 @@
 .classpath
+.DS_Store
 .gradle
 .groovy
 .project
 .settings
+.idea
+*.iml
 BACKUPDEFAULT.if
 bin
+out
 build
 license
 gemfire.properties

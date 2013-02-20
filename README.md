@@ -3,7 +3,44 @@ gemfire-groovy-extensions
 
 # A Groovy DSL for GemFire
 
-Using Groovy extensions it's possible to extend the FunctionService Java class with additional methods and thus write the following:
+Groovy's Closure object can be used in place of each of GemFire's listener objects.
+
+The meta-programming capabitilities offered by Groovy's extension modules feature is the mechanism that Groovy uses to add methods to existing Java objects.
+That functionality is available to the user, so for example, it's possible to add a new method to the Region object that takes a Closure and maps that to the methods in a CacheListener.
+
+    public void cacheListener(Closure closure)
+
+The resulting code in a Groovy program could look like this:
+
+    def region = cache.getRegion('regionName')
+    region.cacheListener {
+      afterCreate { e->
+        println "received afterCreate event: ${e}"
+      }
+    }
+
+The equivalent code in Java:
+
+    public class MyCacheListener extends CacheListenerAdapter {
+      @Override
+      public void afterCreate(EntryEvent e) {
+        System.out.printf("received beforeCreate event: %s %n", e);
+      }
+    }
+
+    Region<K,V> region = cache.getRegion('regionName');
+    CacheListener cl = new MyCacheListener();
+    region.getAttributesMutator().addCacheListener(cl);
+
+Just as easily, a CacheWriter can be implemented using a Closure, with the result as follows:
+
+    region.cacheWriter {
+      beforeCreate { e->
+        println "received beforeCreate event: ${e}"
+      }
+    }
+
+The FunctionService Java class can be extended with additional methods too, and then it's possible to write the following:
 
     def function1 = { fc->
       println "called function! ${fc.getFunctionId()}"

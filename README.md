@@ -3,7 +3,7 @@ gemfire-groovy-extensions
 
 A Groovy DSL for GemFire
 
-Using Groovy extensions it's possible to write the following:
+Using Groovy extensions it's possible to extend the FunctionService Java class with additional methods and thus write the following:
 
     def function1 = { fc->
       println "called function! ${fc.getFunctionId()}"

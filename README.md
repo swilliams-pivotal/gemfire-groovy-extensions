@@ -17,12 +17,13 @@ Or alternatively and even more concisely:
       println "called function! ${fc.getFunctionId()}"
     }
 
-The closure that is passed in as a parameter is wrapped in a FunctionAdapter that delegates to the closure, and modifies it's behaviour by adding additional utility methods.
+The closure that is passed in as a parameter is wrapped in a FunctionAdapter that delegates to the closure, and modifies its behaviour by adding additional utility methods in the closure's delegate object.
 
     FunctionService.registerFunction('function1') { fc->
-      send('foo') // equates to fc.getResultSender().sendResult('foo')
-      send 'foo'  // these are equivalents in Groovy
-      last 'bar'  // equates to fc.getResultSender().lastResult('bar')
+      send('foo')    // equates to fc.getResultSender().sendResult('foo')
+      send 'foo'     // these are equivalents in Groovy
+
+      last 'bar'     // equates to fc.getResultSender().lastResult('bar')
     }
 
 The `ClosureFunctionAdapter` class also provides automatic exception handling, so anything thrown from the closure is correctly handled.

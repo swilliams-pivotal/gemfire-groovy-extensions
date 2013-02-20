@@ -48,15 +48,15 @@ The FunctionService Java class can be extended with additional methods too, and 
 
     FunctionService.registerFunction('function1', function1)
 
-The newly added method signature is:
-
-    public static void registerFunction(String id, Closure closure)
-
 Or alternatively and even more concisely:
 
     FunctionService.registerFunction('function1') { fc->
       println "called function! ${fc.getFunctionId()}"
     }
+
+The newly added method signature is:
+
+    public static void registerFunction(String id, Closure closure)
 
 The closure that is passed in as a parameter is wrapped in a FunctionAdapter that delegates to the closure, passing the FunctionContext value as a parameter when it's executed.
 It also modifies the closure's behaviour by adding additional utility methods in its delegate object.

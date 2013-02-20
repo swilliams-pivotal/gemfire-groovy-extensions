@@ -19,6 +19,14 @@ The resulting code in a Groovy program could look like this:
       }
     }
 
+Or by overriding the leftShift method, and therefore the `<<` operator, the following syntax is possible:
+
+    region << {
+      afterCreate { e->
+        println "received afterCreate event: ${e}"
+      }
+    }
+
 The equivalent code in Java:
 
     public class MyCacheListener extends CacheListenerAdapter {
@@ -35,6 +43,14 @@ The equivalent code in Java:
 Just as easily, a CacheWriter can be implemented using a Closure, with the result as follows:
 
     region.cacheWriter {
+      beforeCreate { e->
+        println "received beforeCreate event: ${e}"
+      }
+    }
+
+As above, by overriding the rightShift method, and therefore the `>>` operator, the following syntax is possible:
+
+    region >> {
       beforeCreate { e->
         println "received beforeCreate event: ${e}"
       }

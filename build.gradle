@@ -15,6 +15,8 @@ dependencies {
   compile "org.codehaus.groovy:groovy-all:$groovyVersion"
   compile "org.codehaus.gpars:gpars:$gparsVersion"
   compile "com.gemstone.gemfire:gemfire:$gemfireVersion"
+
+  testCompile "org.spockframework:spock-core:$spockVersion"
   testCompile "junit:junit-dep:$junitVersion"
 }
 

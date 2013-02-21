@@ -10,6 +10,7 @@ import com.pivotal.pso.gemfire.util.CacheListenerBuilder
 import com.pivotal.pso.gemfire.util.CacheListenerSupport
 import com.pivotal.pso.gemfire.util.CacheWriterBuilder
 import com.pivotal.pso.gemfire.util.CacheWriterSupport
+import com.pivotal.pso.gemfire.util.ClosureCacheWriterAdapter
 
 
 @CompileStatic
@@ -47,31 +48,34 @@ class RegionExtensions {
 
     static Region cacheWriter(Region selfType, Map<String, Closure> funcmap) {
 
-        Map<String, Closure> listener = [:]
+        Map<String, Closure> writer = [:]
 
         // create a new map, add & transform closures in it
-        funcmap.collectEntries(listener) { String name, Closure closure ->
+        funcmap.collectEntries(writer) { String name, Closure closure ->
+            def cws = new CacheWriterSupport()
             def owner = closure.owner
             def thisObject = closure.thisObject
-            def cls = new CacheWriterSupport()
-            def hydrated = closure.rehydrate(cls, owner, thisObject)
-            hydrated.resolveStrategy = Closure.DELEGATE_FIRST
+
+            def hydrated = closure.rehydrate(cws, cws, cws)
+            hydrated.resolveStrategy = Closure.DELEGATE_ONLY
+
             [name, hydrated]
         }
 
-        selfType.getAttributesMutator().setCacheWriter(listener as CacheWriterAdapter)
+        selfType.getAttributesMutator().setCacheWriter(new ClosureCacheWriterAdapter(writer))
+
         selfType
     }
 
     static Region rightShift(Region selfType, @DelegatesTo(strategy=DELEGATE_FIRST, value=CacheWriterBuilder) Closure closure) {
 
-        def builder = new CacheWriterBuilder()
+        def builder = new CacheWriterBuilder(selfType)
         def hydrated = closure.rehydrate(builder, selfType, selfType)
         hydrated.resolveStrategy = DELEGATE_FIRST
         hydrated()
 
-        def listener = builder.build()
-        selfType.getAttributesMutator().setCacheWriter(listener as CacheWriterAdapter)
+        def writer = builder.build()
+        selfType.getAttributesMutator().setCacheWriter(writer as CacheWriterAdapter)
         selfType
     }
 }

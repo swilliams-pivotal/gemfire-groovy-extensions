@@ -3,11 +3,18 @@ package com.pivotal.pso.gemfire.util
 import static groovy.lang.Closure.DELEGATE_FIRST
 import groovy.transform.CompileStatic
 
+import com.gemstone.gemfire.cache.Region
 import com.gemstone.gemfire.cache.util.CacheWriterAdapter
 
 
 @CompileStatic
 class CacheWriterBuilder {
+
+    private final Region region
+
+    CacheWriterBuilder(Region region) {
+        this.region = region;
+    }
 
     Map<String, Closure> listener = [:]
 
@@ -21,18 +28,8 @@ class CacheWriterBuilder {
         this
     }
 
-    def beforeInvalidate(@DelegatesTo(strategy=DELEGATE_FIRST, value=CacheWriterSupport) Closure closure) {
-        listener['beforeInvalidate'] = hydrateAndDelegate(closure)
-        this
-    }
-
     def beforeDestroy(@DelegatesTo(strategy=DELEGATE_FIRST, value=CacheWriterSupport) Closure closure) {
         listener['beforeDestroy'] = hydrateAndDelegate(closure)
-        this
-    }
-
-    def beforeRegionCreate(@DelegatesTo(strategy=DELEGATE_FIRST, value=CacheWriterSupport) Closure closure) {
-        listener['beforeRegionCreate'] = hydrateAndDelegate(closure)
         this
     }
 
@@ -41,18 +38,8 @@ class CacheWriterBuilder {
         this
     }
 
-    def beforeRegionInvalidate(@DelegatesTo(strategy=DELEGATE_FIRST, value=CacheWriterSupport) Closure closure) {
-        listener['beforeRegionInvalidate'] = hydrateAndDelegate(closure)
-        this
-    }
-
     def beforeRegionDestroy(@DelegatesTo(strategy=DELEGATE_FIRST, value=CacheWriterSupport) Closure closure) {
         listener['beforeRegionDestroy'] = hydrateAndDelegate(closure)
-        this
-    }
-
-    def beforeRegionLive(@DelegatesTo(strategy=DELEGATE_FIRST, value=CacheWriterSupport) Closure closure) {
-        listener['beforeRegionLive'] = hydrateAndDelegate(closure)
         this
     }
 
@@ -60,12 +47,12 @@ class CacheWriterBuilder {
         listener as CacheWriterAdapter
     }
 
-    static Closure hydrateAndDelegate(Closure closure) {
+    private Closure hydrateAndDelegate(@DelegatesTo(strategy=DELEGATE_FIRST, value=CacheWriterSupport) Closure closure) {
         def cws = new CacheWriterSupport()
         def owner = closure.owner
         def thisObject = closure.thisObject
-        def hydrated = closure.rehydrate(cws, owner, thisObject)
-        hydrated.resolveStrategy = DELEGATE_FIRST
+        def hydrated = closure.rehydrate(cws, region, region)
+        hydrated.resolveStrategy = Closure.DELEGATE_ONLY
         hydrated
     }
 

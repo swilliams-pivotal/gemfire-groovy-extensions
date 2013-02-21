@@ -56,8 +56,8 @@ class RegionExtensions {
             def owner = closure.owner
             def thisObject = closure.thisObject
 
-            def hydrated = closure.rehydrate(cws, cws, cws)
-            hydrated.resolveStrategy = Closure.DELEGATE_ONLY
+            def hydrated = closure.rehydrate(cws, owner, cws)
+            hydrated.resolveStrategy = Closure.DELEGATE_FIRST
 
             [name, hydrated]
         }

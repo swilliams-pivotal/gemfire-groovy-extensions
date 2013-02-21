@@ -20,12 +20,12 @@ dependencies {
   testCompile "junit:junit-dep:$junitVersion"
 }
 
-compileGroovy.groovyOptions.useAnt = true
-compileTestGroovy.groovyOptions.useAnt = true
+//compileGroovy.groovyOptions.useAnt = true
+//compileTestGroovy.groovyOptions.useAnt = true
 
 test {
     testLogging { exceptionFormat "full" }
-    testLogging.showStandardStreams = true
+    // testLogging.showStandardStreams = true
 }
 
-task cleanCheck(dependsOn: ['check','clean'])
+task cleanCheck(dependsOn: ['clean', 'check'])

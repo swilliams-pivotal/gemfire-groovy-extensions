@@ -17,10 +17,16 @@ class ClosureCacheWriterAdapter<K, V> extends CacheWriterAdapter<K, V> {
         this.funcmap = funcmap
     }
 
+    private void call(Closure closure, EntryEvent<K, V> event) throws CacheWriterException {
+        def hydrated = closure.rehydrate(closure.delegate, this, this)
+        hydrated.call(event)
+    }
+
     @Override
     public void beforeCreate(EntryEvent<K, V> event)
             throws CacheWriterException {
-        funcmap['beforeCreate']?.call(event)
+        def closure = funcmap['beforeCreate']
+        if (closure) call(closure, event)
     }
 
     @Override

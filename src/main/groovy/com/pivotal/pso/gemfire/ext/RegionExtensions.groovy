@@ -2,6 +2,7 @@ package com.pivotal.pso.gemfire.ext
 
 import static groovy.lang.Closure.DELEGATE_FIRST
 import groovy.transform.CompileStatic
+import groovyx.gpars.dataflow.Promise
 
 import com.gemstone.gemfire.cache.Region
 import com.gemstone.gemfire.cache.util.CacheListenerAdapter
@@ -34,7 +35,7 @@ class RegionExtensions {
         selfType
     }
 
-    static Region leftShift(Region selfType, @DelegatesTo(strategy=DELEGATE_FIRST, value=CacheListenerBuilder) Closure closure) {
+    static Region rightShift(Region selfType, @DelegatesTo(strategy=DELEGATE_FIRST, value=CacheListenerBuilder) Closure closure) {
 
         def builder = new CacheListenerBuilder()
         def hydrated = closure.rehydrate(builder, selfType, selfType)
@@ -67,7 +68,7 @@ class RegionExtensions {
         selfType
     }
 
-    static Region rightShift(Region selfType, @DelegatesTo(strategy=DELEGATE_FIRST, value=CacheWriterBuilder) Closure closure) {
+    static Region leftShift(Region selfType, @DelegatesTo(strategy=DELEGATE_FIRST, value=CacheWriterBuilder) Closure closure) {
 
         def builder = new CacheWriterBuilder(selfType)
         def hydrated = closure.rehydrate(builder, selfType, selfType)
@@ -78,4 +79,11 @@ class RegionExtensions {
         selfType.getAttributesMutator().setCacheWriter(writer as CacheWriterAdapter)
         selfType
     }
+
+    static Promise createCacheListenerPromise(Region selfType) {
+        Promise promise = null
+        selfType.getAttributesMutator().addCacheListener(promise as CacheListenerAdapter)
+        promise
+    }
+
 }

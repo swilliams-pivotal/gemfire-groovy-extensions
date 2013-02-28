@@ -19,7 +19,7 @@ The resulting code in a Groovy program could look like this:
       }
     }
 
-Or by overriding the rightShift method, and therefore the `<<` operator, the following syntax is possible:
+Or by overriding the rightShift method, and therefore the `>>` operator, the following syntax is possible:
 
     region >> {
       afterCreate { e->
@@ -48,7 +48,7 @@ Just as easily, a CacheWriter can be implemented using a Closure, with the resul
       }
     }
 
-As above, by overriding the leftShift method, and therefore the `>>` operator, the following syntax is possible:
+As above, by overriding the leftShift method, and therefore the `<<` operator, the following syntax is possible:
 
     region << {
       beforeCreate { e->
